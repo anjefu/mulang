@@ -121,10 +121,13 @@ spec = do
       scoped (hasUsage "p") "o" (js "var o = {z: function(x) { m }}") `shouldBe` False
 
     it "is True on usage in method, scoped twice" $ do
-      scoped (scoped (hasUsage "m") "z") "o" (js "var o = {z: function(x) { m }}") `shouldBe` True
+      scopedList (hasUsage "m") ["o", "z"] (js "var o = {z: function(x) { m }}") `shouldBe` True
 
     it "is False on missing usage in method, scoped twice" $ do
-      scoped (scoped (hasUsage "p") "z") "o" (js "var o = {z: function(x) { m }}") `shouldBe` False
+      scopedList (hasUsage "p") ["o", "z"] (js "var o = {z: function(x) { m }}") `shouldBe` False
+
+    it "is False on usage in wrong method, scoped twice" $ do
+      scopedList (hasUsage "m") ["o", "z"] (js "var o = {p: function(x) { m }}") `shouldBe` False
 
     it "is True through function application in function" $ do
       transitive (hasUsage "m") "f" (js "function g() { m }; function f(x) { g() }") `shouldBe` True
@@ -142,3 +145,14 @@ spec = do
       transitive (hasUsage "m") "p" (js "var o = {g: function(){ m }}\n\
                                         \var p = {n: function() { o.g() }}") `shouldBe` True
 
+    it "is False through message send in objects when binding not used" $ do
+      transitive (hasUsage "m") "p" (js "var o = {g: function(){ j }}\n\
+                                        \var p = {n: function() { o.g() }}") `shouldBe` False
+
+    it "is False through message send in objects when object and message not used" $ do
+      transitive (hasUsage "m") "p" (js "var o2 = {g2: function(){ m }}\n\
+                                        \var p = {n: function() { o.g() }}") `shouldBe` False
+
+    it "is True through message send in objects when object and message not used" $ do
+      transitive (scoped (hasUsage "p") "g") "p" (js "var p = {n: function() { g() }, \n\
+                                                   \         g: function() { m() }}") `shouldBe` True

@@ -1,5 +1,7 @@
 module Language.Mulang.Explorer (
   (//),
+  newContext,
+  Context(..),
   expressionsOf,
   equationBodiesOf,
   referencesOf,
@@ -11,6 +13,7 @@ module Language.Mulang.Explorer (
   nameOf,
   extractDeclaration,
   extractReference,
+
   Expression(..),
   Binding) where
 
@@ -20,8 +23,14 @@ import Data.List (nub)
 
 type Binding = String
 
-(//)  :: Expression -> Binding -> [Expression]
-(//) = flip bindedDeclarationsOf
+data Context = Context { parents :: [[Expression]], current :: [Expression] }
+
+
+newContext :: Expression -> Context
+newContext e = Context [] [e]
+
+(//)  :: Context -> Binding -> Context
+(Context parents current) // b = Context (parents ++ [current]) (concatMap (bindedDeclarationsOf b) current)
 
 expressionsOf :: Expression -> [Expression]
 expressionsOf expr = expr : concatMap expressionsOf (subExpressions expr)

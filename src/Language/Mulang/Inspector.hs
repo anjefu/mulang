@@ -41,7 +41,7 @@ hasAttribute =  isOrContainsDeclaration f
 
 hasMethod :: ScopedInspection
 hasMethod =  isOrContainsDeclaration f
-  where f (MethodDeclaration n _) = True
+  where f (MethodDeclaration _ _) = True
         f _                       = False
 
 -- | Inspection that tells whether a binding uses the composition operator '.'
