@@ -6,4 +6,4 @@ build:
     code: cabal update && cabal install && cabal install hspec
   - script:
       name: cabal
-      code: cabal test
+      code: cabal test --ghc-option=-fsimpl-tick-factor=130
