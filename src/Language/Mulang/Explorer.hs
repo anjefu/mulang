@@ -47,6 +47,7 @@ expressionsOf expr = expr : concatMap expressionsOf (subExpressions expr)
     subExpressions (Comprehension a _)                = [a] --TODO
     subExpressions (Not e)                 = [e]
     subExpressions (Forall e1 e2)           = [e1, e2]
+    subExpressions (OrOperator e1 e2)           = [e1, e2]
     subExpressions (Return v)                         = [v]
     subExpressions (Sequence es)                      = es
     subExpressions (MuObject es)                      = [es]

@@ -5,6 +5,7 @@ module Language.Mulang.Inspector.Smell (
   hasRedundantLambda,
   hasRedundantParameter,
   hasUnifyOperator,
+  hasOrOperator,
   doesNullTest,
   doesTypeTest,
   returnsNull) where
@@ -81,4 +82,7 @@ hasUnifyOperator = containsExpression f
   where f (Exist "=" _) = True
         f _ = False
 
-
+hasOrOperator :: Inspection
+hasOrOperator = containsExpression f
+  where f (OrOperator _ _) = True
+        f _ = False

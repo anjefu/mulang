@@ -40,6 +40,7 @@ data Expression
         | Exist Identifier [Pattern]
         | Not Expression
         | Forall Expression Expression
+        | OrOperator Expression Expression
         | Variable Identifier
         | Application Expression [Expression]
         | Send Expression Expression [Expression]

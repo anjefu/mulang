@@ -79,6 +79,12 @@ pnot = do
 
 exist = fmap (\(name, args) -> Exist name args) phead
 
+orOperator = do
+              c1 <- consult
+              semicolon
+              c2 <- consult
+              return $ OrOperator c1 c2
+
 pinfix = do
             p1 <- pattern
             spaces
@@ -87,7 +93,7 @@ pinfix = do
             p2 <- pattern
             return $ Exist operator [p1, p2]
 
-consult = choice [try forall, try pnot, try pinfix, exist]
+consult = choice [try forall, try pnot, try orOperator, try pinfix, exist]
 
 rawPatternsList = optionMaybe $ do
                  openParen
@@ -106,6 +112,7 @@ def = do
 openParen = char '(' >> spaces
 closeParen = char ')' >> spaces
 comma = spaces >> char ',' >> spaces
+semicolon = spaces >> char ';' >> spaces
 
 predicate :: Parsec String a Expression
 predicate = try fact <|> rule
