@@ -69,3 +69,9 @@ spec = do
 
     it "is False when no equal" $ do
       hasUnifyOperator (pl "baz(X):- baz(X).") `shouldBe` False
+  describe "hasOrOperator" $ do
+    it "is True when used" $ do
+      hasOrOperator (pl "baz(X):- foo(X);bar(X).") `shouldBe` True
+
+    it "is False when no used" $ do
+      hasOrOperator (pl "baz(X):- baz(X).") `shouldBe` False

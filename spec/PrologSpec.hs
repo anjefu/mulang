@@ -103,3 +103,7 @@ spec = do
           \    foo(bar),\n\
           \    goo(bar),\n\
           \    baz." `shouldBe` RuleDeclaration "baz" [LiteralPattern "bar"] [Exist "foo" [LiteralPattern "bar"],Exist "goo" [LiteralPattern "bar"],Exist "baz" []]
+
+    -- it "rule/1 with or operator" $ do
+    --   pl "baz(bar):- foo(bar);goo(bar)." `shouldBe` RuleDeclaration "baz" [VariablePattern "bar"] [Exist "foo" [VariablePattern "bar"], OrOperator (Exist "foo" [VariablePattern "bar"]) (Exist "goo" [VariablePattern "bar"]), Exist "goo" [VariablePattern "bar"]]
+
