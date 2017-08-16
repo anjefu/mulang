@@ -114,6 +114,7 @@ declarationsOf :: Identifier -> Generator Expression
 declarationsOf b = boundDeclarations (named b)
 
 extractReference :: Expression -> Maybe Identifier
+--TODO this list is not complete
 extractReference (Reference n)        = Just n
 extractReference (Exist n _)          = Just n
 extractReference _                    = Nothing
