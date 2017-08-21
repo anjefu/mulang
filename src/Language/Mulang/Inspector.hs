@@ -1,4 +1,6 @@
 module Language.Mulang.Inspector (
+  Inspection,
+  IdentifierInspection,
   module Language.Mulang.Inspector.Generic,
   module Language.Mulang.Inspector.Combiner,
   module Language.Mulang.Inspector.ObjectOriented,
@@ -7,6 +9,7 @@ module Language.Mulang.Inspector (
   module Language.Mulang.Inspector.Procedural) where
 
 
+import Language.Mulang.Inspector.Primitive (Inspection, IdentifierInspection)
 import Language.Mulang.Inspector.Generic
 import Language.Mulang.Inspector.Combiner
 import Language.Mulang.Inspector.ObjectOriented

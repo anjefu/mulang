@@ -18,25 +18,16 @@ module Language.Mulang.Inspector.Generic (
   rescues,
   usesExceptions,
   usesExceptionHandling,
-  containsExpression,
-  containsDeclaration,
-  containsBoundDeclaration,
-  containsBody,
-  matchesType,
   typesReturnAs,
   typesParameterAs,
-  typesAs,
-  Inspection,
-  IdentifierInspection) where
+  typesAs) where
 
 import Language.Mulang.Ast
 import Language.Mulang.Identifier
-import Language.Mulang.Generator (expressions, boundDeclarations, equationBodies, declarations, referencedIdentifiers)
+import Language.Mulang.Inspector.Primitive
+import Language.Mulang.Generator (declarations, referencedIdentifiers)
 
 import Data.Maybe (listToMaybe)
-
-type Inspection = Expression  -> Bool
-type IdentifierInspection = IdentifierPredicate -> Inspection
 
 typesReturnAs :: IdentifierInspection
 typesReturnAs predicate = containsDeclaration f
@@ -176,26 +167,7 @@ usesAnonymousVariable = containsExpression f
         isOrContainsWildcard _                                 = False
 
 
-containsExpression :: (Expression -> Bool) -> Inspection
-containsExpression f = has f expressions
 
-containsBody :: (EquationBody -> Bool)-> Inspection
-containsBody f = has f equationBodies
-
-containsBoundDeclaration :: (Expression -> Bool) -> IdentifierInspection
-containsBoundDeclaration f b  = has f (boundDeclarations b)
-
-containsDeclaration :: (Expression -> Bool) -> Inspection
-containsDeclaration f = has f (map snd . declarations)
-
-matchesType :: IdentifierPredicate -> Pattern -> Bool
-matchesType predicate (TypePattern n)               = predicate n
-matchesType predicate (AsPattern _ (TypePattern n)) = predicate n
-matchesType _         _                             = False
-
--- private
-
-has f g = any f . g
 
 
 

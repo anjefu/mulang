@@ -14,7 +14,7 @@ module Language.Mulang.Inspector.Generic.Smell (
   doesConsolePrint) where
 
 import Language.Mulang.Ast
-import Language.Mulang.Inspector
+import Language.Mulang.Inspector.Primitive
 
 
 -- | Inspection that tells whether an identifier has expressions like 'x == True'
