@@ -3,6 +3,7 @@ module Language.Mulang.Inspector (
   IdentifierInspection,
   module Language.Mulang.Inspector.Generic,
   module Language.Mulang.Inspector.Combiner,
+  module Language.Mulang.Inspector.Typed,
   module Language.Mulang.Inspector.ObjectOriented,
   module Language.Mulang.Inspector.Functional,
   module Language.Mulang.Inspector.Logic,
@@ -11,6 +12,7 @@ module Language.Mulang.Inspector (
 
 import Language.Mulang.Inspector.Primitive (Inspection, IdentifierInspection)
 import Language.Mulang.Inspector.Generic
+import Language.Mulang.Inspector.Typed
 import Language.Mulang.Inspector.Combiner
 import Language.Mulang.Inspector.ObjectOriented
 import Language.Mulang.Inspector.Functional
