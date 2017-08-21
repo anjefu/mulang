@@ -7,7 +7,8 @@ module Language.Mulang.Inspector.Functional (
   usesConditional) where
 
 import Language.Mulang.Ast
-import Language.Mulang.Inspector.Generic
+import Language.Mulang.Inspector.Primitive
+import Language.Mulang.Inspector.Generic (usesIf)
 import Language.Mulang.Inspector.Combiner
 
 usesConditional :: Inspection
