@@ -12,15 +12,11 @@ module Language.Mulang.Inspector.Generic (
   declaresComputationWithArity,
   declaresComputationWithArity',
   declaresTypeAlias,
-  declaresTypeSignature,
   usesAnonymousVariable,
   raises,
   rescues,
   usesExceptions,
-  usesExceptionHandling,
-  typesReturnAs,
-  typesParameterAs,
-  typesAs) where
+  usesExceptionHandling) where
 
 import Language.Mulang.Ast
 import Language.Mulang.Identifier
@@ -29,20 +25,6 @@ import Language.Mulang.Generator (declarations, referencedIdentifiers)
 
 import Data.Maybe (listToMaybe)
 
-typesReturnAs :: IdentifierInspection
-typesReturnAs predicate = containsDeclaration f
-  where f (TypeSignature _ (Just _) name)  = predicate name
-        f _                                = False
-
-typesParameterAs :: IdentifierInspection
-typesParameterAs predicate = containsDeclaration f
-  where f (TypeSignature _ (Just names) _)  = any predicate names
-        f _                                 = False
-
-typesAs :: IdentifierInspection
-typesAs predicate = containsDeclaration f
-  where f (TypeSignature _ Nothing name) = predicate name
-        f _                              = False
 
 -- | Inspection that tells whether an expression is equal to a given piece of code after being parsed
 parses :: (String -> Expression) -> String -> Inspection
@@ -120,11 +102,6 @@ declaresTypeAlias :: IdentifierInspection
 declaresTypeAlias = containsBoundDeclaration f
   where f (TypeAlias _) = True
         f _             = False
-
-declaresTypeSignature :: IdentifierInspection
-declaresTypeSignature = containsBoundDeclaration f
-  where f (TypeSignature _ _ _) = True
-        f _                     = False
 
 raises :: IdentifierInspection
 raises predicate = containsExpression f
