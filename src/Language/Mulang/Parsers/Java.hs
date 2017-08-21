@@ -46,13 +46,15 @@ muDecl (InitDecl _ _)          = return Other
 
 muMemberDecl :: MemberDecl -> [Expression]
 muMemberDecl (FieldDecl _ _type varDecls)                                     = map (variableToAttribute.muVarDecl) varDecls
-muMemberDecl (MethodDecl _ _ _ name params _ (MethodBody Nothing))            = return $ TypeSignature (i name) (Just $ map muFormalParamType params) "void"
+muMemberDecl (MethodDecl _ _ returnType name params _ (MethodBody Nothing))   = return $ muMethodSignature name params returnType
 muMemberDecl (MethodDecl (elem Static -> True) _ _ (Ident "main") [_] _ body) = return $ EntryPoint "main" (muMethodBody body)
-muMemberDecl (MethodDecl _ _ _ name params _ body)                            = return $ SimpleMethod (i name) (map muFormalParam params) (muMethodBody body)
+muMemberDecl (MethodDecl _ _ returnType name params _ body)                   = [ muMethodSignature name params returnType,
+                                                                                  SimpleMethod (i name) (map muFormalParam params) (muMethodBody body)]
 muMemberDecl (ConstructorDecl _ _ _ _params _ _constructorBody)               = return $ Other
 muMemberDecl (MemberClassDecl decl)                                           = return $ muClassTypeDecl decl
 muMemberDecl (MemberInterfaceDecl decl)                                       = return $ muInterfaceTypeDecl decl
 
+muMethodSignature name params returnType = TypeSignature (i name) (Just $ map muFormalParamType params) (muReturnType returnType)
 muEnumConstant (EnumConstant name _ _) = i name
 
 muFormalParam (FormalParam _ _ _ id)      = VariablePattern (v id)
@@ -66,6 +68,7 @@ muBlockStmt (LocalVars _ _type vars) = map muVarDecl vars
 
 muType (PrimType t) = muPrimType t
 muType (RefType t)  = muRefType t
+muReturnType = fromMaybe "void" . fmap muType
 
 muStmt (StmtBlock block)               = muBlock block
 muStmt (IfThen exp ifTrue)             = If (muExp exp) (muStmt ifTrue) MuNull
