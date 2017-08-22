@@ -73,6 +73,9 @@ expressions expr = expr : concatMap expressions (subExpressions expr)
     subExpressions (MuObject es)           = [es]
     subExpressions (MuTuple as)            = as
     subExpressions (MuList as)             = as
+    subExpressions (New e es)              = e : es
+    subExpressions (Implement e)           = [e]
+    subExpressions (Include e)             = [e]
     subExpressions _                       = []
 
 
@@ -114,7 +117,6 @@ declarationsOf :: Identifier -> Generator Expression
 declarationsOf b = boundDeclarations (named b)
 
 extractReference :: Expression -> Maybe Identifier
---TODO this list is not complete
 extractReference (Reference n)        = Just n
 extractReference (Exist n _)          = Just n
 extractReference _                    = Nothing

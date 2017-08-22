@@ -255,4 +255,4 @@ spec = do
           }|] `shouldBe` Class "Foo" Nothing (Sequence [
                             TypeSignature "hello" (Just []) "Foo",
                             (SimpleMethod "hello" [] (
-                              Return (New "Bar" [MuNumber 3])))])
+                              Return (New (Reference "Bar") [MuNumber 3])))])

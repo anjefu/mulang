@@ -246,10 +246,10 @@ spec = do
 
   describe "usesMixins" $ do
     it "is True when include present" $ do
-      usesMixins (Class "Dragon" Nothing (Include "FlyingCreature")) `shouldBe` True
+      usesMixins (Class "Dragon" Nothing (Include (Reference "FlyingCreature"))) `shouldBe` True
 
     it "is False when include not present" $ do
-      usesMixins (Class "Dragon" Nothing (Implement "FlyingCreature")) `shouldBe` False
+      usesMixins (Class "Dragon" Nothing (Implement (Reference "FlyingCreature"))) `shouldBe` False
 
   describe "declaresMethod" $ do
     it "is True when present" $ do

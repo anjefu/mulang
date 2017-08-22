@@ -35,7 +35,7 @@ muClassTypeDecl (ClassDecl _ name _ superclass interfaces (ClassBody body)) =
 muClassTypeDecl (EnumDecl _ name _ (EnumBody constants _))                   =
   Enumeration (i name) (map muEnumConstant constants)
 
-muImplements interface = Implement $ muRefType interface
+muImplements interface = Implement $ Reference (muRefType interface)
 
 muInterfaceTypeDecl (InterfaceDecl _ name _ interfaces (InterfaceBody body)) =
   Interface (i name) (map muRefType interfaces) (compactConcatMap muMemberDecl body )
@@ -93,7 +93,7 @@ muExp (BinOp arg1 op arg2)              = Send (muExp arg1) (muOp op) [muExp arg
 muExp (Cond cond ifTrue ifFalse)        = If (muExp cond) (muExp ifTrue) (muExp ifFalse)
 muExp (ExpName name)                    = muName name
 muExp (Assign lhs EqualA exp)           = Assignment (muLhs lhs) (muExp exp)
-muExp (InstanceCreation _ clazz args _) = New (r clazz) (map muExp args)
+muExp (InstanceCreation _ clazz args _) = New (Reference $ r clazz) (map muExp args)
 muExp (PreNot exp)                      = SimpleSend (muExp exp) "!" []
 muExp (Lambda params exp)               = M.Lambda (muLambdaParams params) (muLambdaExp exp)
 muExp (MethodRef _ message)             = M.Lambda [VariablePattern "it"] (SimpleSend (Reference "it") (i message) [])
