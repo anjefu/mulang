@@ -256,3 +256,10 @@ spec = do
                             TypeSignature "hello" (Just []) "Foo",
                             (SimpleMethod "hello" [] (
                               Return (New (Reference "Bar") [MuNumber 3])))])
+
+    it "parses attributes" $ do
+      run [text|class Foo {
+             private int foo = 4;
+          }|] `shouldBe` Class "Foo" Nothing (Sequence [
+                            TypeSignature "foo" Nothing "int",
+                            Attribute "foo" (MuNumber 4)])
