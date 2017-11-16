@@ -122,6 +122,8 @@ data Expression
     -- ^ Generic try expression, composed by a body, a list of exception-handling patterns and statments, and a finally expression
     | Raise Expression
     -- ^ Generic raise expression, like a throw or raise statament, composed by the raised expression
+    | Interpolation [Expression]
+    -- ^ String interpolation, composed by each of the fragments of the string. For example, in "hello${foo} bar" the parts are "in", foo and " bar"
     | Print Expression
     -- ^ Generic print expression
     | Comprehension Expression [ComprehensionStatement]

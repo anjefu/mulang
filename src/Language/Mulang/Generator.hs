@@ -72,8 +72,9 @@ expressions expr = expr : concatMap expressions (subExpressions expr)
     subExpressions (Return v)              = [v]
     subExpressions (Sequence es)           = es
     subExpressions (MuObject es)           = [es]
-    subExpressions (MuTuple as)            = as
-    subExpressions (MuList as)             = as
+    subExpressions (MuTuple es)            = es
+    subExpressions (MuList es)             = es
+    subExpressions (Interpolation es)      = es
     subExpressions _                       = []
 
 

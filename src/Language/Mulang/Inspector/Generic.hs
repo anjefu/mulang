@@ -19,6 +19,7 @@ module Language.Mulang.Inspector.Generic (
   rescues,
   usesExceptions,
   usesExceptionHandling,
+  usesInterpolations,
   containsExpression,
   containsDeclaration,
   containsBoundDeclaration,
@@ -144,6 +145,11 @@ usesExceptionHandling :: Inspection
 usesExceptionHandling  = containsExpression f
   where f (Try _ _ _) = True
         f _           = False
+
+usesInterpolations :: Inspection
+usesInterpolations  = containsExpression f
+  where f (Interpolation _) = True
+        f _                 = False
 
 usesAnonymousVariable :: Inspection
 usesAnonymousVariable = containsExpression f
