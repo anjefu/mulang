@@ -1,7 +1,7 @@
 {-# LANGUAGE ViewPatterns #-}
 
 
-module Language.Mulang.Parsers.Java (java, parseJava) where
+module Language.Mulang.Parsers.Java (java, parseJava, unjava) where
 
 import Language.Mulang.Ast hiding (While, Return, Equal, Lambda, Try)
 import qualified Language.Mulang.Ast as M (Expression(While, Return, Equal, Lambda, Try))
@@ -16,6 +16,27 @@ import Control.Fallible
 import Data.Maybe (fromMaybe)
 import Data.List (intercalate)
 import Data.Char (toLower)
+import Data.String (unwords)
+
+
+type Unparser = Expression -> String
+
+unjava :: Unparser
+unjava (Class name Nothing _ )           = unwords ["public class", name, "{}"]
+unjava (Class name (Just superclass) _ ) = unwords ["public class", name, "extends", superclass, "{}"]
+unjava (Interface name [] body)          = unwords ["public interface", name, "{", unbody body, "}"]
+unjava _                                 = ""
+
+unbody :: Unparser
+unbody MuNull                        = ""
+unbody (Sequence members)            = unlines (map unbody members)
+unbody (TypeSignature name args typ) = unwords ["public abstract", typ, name, "(", unparam args, ");"]
+
+unparam :: [Identifier] -> String
+unparam = intercalate "," . zipWith buildParam [0..]
+
+buildParam :: Int -> Identifier -> String
+buildParam index typeParam = typeParam ++ " arg" ++ show index
 
 java :: Parser
 java = orFail . parseJava'
