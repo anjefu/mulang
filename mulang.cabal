@@ -53,6 +53,8 @@ library
     Language.Mulang.Parsers.Prolog
     Language.Mulang.Parsers.Java
     Language.Mulang.Parsers.JavaScript
+    Language.Mulang.Unparsers
+    Language.Mulang.Unparsers.Java
     Language.Mulang.Analyzer
     Language.Mulang.Analyzer.Analysis
     Language.Mulang.Analyzer.Analysis.Json
